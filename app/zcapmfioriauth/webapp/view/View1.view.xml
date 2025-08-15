@@ -1,0 +1,6 @@
+<mvc:View controllerName="zcapmfioriauth.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="page" title="Employee Data Base">
+    </Page>
+</mvc:View>

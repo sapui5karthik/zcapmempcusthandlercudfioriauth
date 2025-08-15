@@ -3,7 +3,7 @@
     xmlns="sap.m">
     <Page id="page" title="Employee Data Base">
     <content>
-    <Text text="Employee CRUD Operations11" />
+    <Text text="Employee CRUD Operations with CICD" />
     </content>
     </Page>
 </mvc:View>

@@ -2,5 +2,8 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
     <Page id="page" title="Employee Data Base">
+    <content>
+    <Text text="Employee CRUD Operations" />
+    </content>
     </Page>
 </mvc:View>

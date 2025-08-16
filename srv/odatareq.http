@@ -1,0 +1,23 @@
+GET http://localhost:4004/odata/v4/catservice/ReadEmpSet
+
+### CREATE
+POST http://localhost:4004/odata/v4/catservice/CreateEmpSet
+Content-Type: application/json
+
+{
+        "EMPID": 104,
+        "EMPNAME": "Suman",
+        "GENDER": "M",
+        "SALARY": 3000        
+}
+
+### UPDATE
+PUT http://localhost:4004/odata/v4/catservice/UpdateEmpSet(104)
+Content-Type: application/json
+
+{
+        "EMPID": 104,
+        "EMPNAME": "Suman999999999999",
+        "GENDER": "M",
+        "SALARY": 22        
+}

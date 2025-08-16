@@ -8,4 +8,7 @@ service catservice {
     @createonly
     entity CreateEmpSet as projection on db.Employee;
 
+    @updateonly
+    entity UpdateEmpSet as projection on db.Employee;
+
 }

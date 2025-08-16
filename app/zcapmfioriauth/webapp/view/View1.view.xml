@@ -1,9 +1,69 @@
 <mvc:View controllerName="zcapmfioriauth.controller.View1"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
-    <Page id="page" title="Employee Data Base">
+    <Page id="page" title="Employee Management">
     <content>
-   
+     <!-- Employee Form -->
+      <VBox class="sapUiSmallMargin">
+        <Label text="Employee ID"/>
+        <Input id="idEmpId" type="Number" width="200px" />
+
+        <Label text="Employee Name"/>
+        <Input id="idEmpName" width="300px" />
+
+        <Label text="Gender"/>
+        <Select id="idGender" width="150px">
+          <items>
+            <core:Item key="M" text="Male" xmlns:core="sap.ui.core"/>
+            <core:Item key="F" text="Female" xmlns:core="sap.ui.core"/>
+          </items>
+        </Select>
+
+        <Label text="Salary"/>
+        <Input id="idSalary" type="Number" width="200px" />
+
+        <Label text="Designation"/>
+        <Input id="idEmpDes" width="300px" />
+
+        <HBox class="sapUiSmallMarginTop">
+          <Button text="Create" type="Emphasized" press=".onCreate"/>
+          <Button text="Update" press=".onUpdate" class="sapUiTinyMarginBegin"/>
+          <Button text="Delete" press=".onDelete" class="sapUiTinyMarginBegin"/>
+          <Button press="_getTableData" icon="sap-icon://refresh" class="sapUiTinyMarginBegin"/>
+        </HBox>
+      </VBox>
+    <Toolbar>
+        <Button text="Create" press=".onCreate"/>
+        <Button text="Update" press=".onUpdate"/>
+        <Button text="Delete" press=".onDelete"/>
+        <Button text="Promote" press=".onPromote"/>
+        <Button text="High Salary (>2000)" press=".onHighSalary"/>
+      </Toolbar>
+      <Table id="empTable" inset="false" items="{/ReadEmpSet}">
+    <headerToolbar>
+        <Toolbar>
+            <Title text="Employees"/>
+        </Toolbar>
+    </headerToolbar>
+    <columns>
+        <Column><Text text="ID"/></Column>
+        <Column><Text text="Name"/></Column>
+        <Column><Text text="Gender"/></Column>
+        <Column><Text text="Salary"/></Column>
+        <Column><Text text="Designation"/></Column>
+    </columns>
+    <items>
+        <ColumnListItem type="Active" press=".onSelect">
+            <cells>
+                <Text text="{EMPID}"/>
+                <Text text="{EMPNAME}"/>
+                <Text text="{GENDER}"/>
+                <Text text="{SALARY}"/>
+                <Text text="{DESIGNATION}"/>
+            </cells>
+        </ColumnListItem>
+    </items>
+</Table>
     </content>
     </Page>
 </mvc:View>

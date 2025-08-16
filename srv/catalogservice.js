@@ -3,18 +3,18 @@ const cds = require('@sap/cds');
 const { Employee } = cds.entities;
 
 module.exports = srv => {
-     srv.on('READ', 'ReadEmpSet', async (req, resp) => {
+  /*   srv.on('READ', 'ReadEmpSet', async (req, resp) => {
 
         let results = await cds.transaction(req).run([
             SELECT.from(Employee)
-        ]);    
+        ]);
 
         return results;
 
-    }); 
+    }); */
 
     // CREATE
-     srv.on('CREATE', 'CreateEmpSet', async (req, resp) => {
+    srv.on('CREATE', 'CreateEmpSet', async (req, resp) => {
         try {
             const result = await cds.transaction(req).run(
                 INSERT.into(Employee).entries(req.data)
@@ -29,7 +29,7 @@ module.exports = srv => {
         } catch (err) {
             req.error(500, 'Server Error: ' + err.toString());
         }
-    }); 
+    });
 
     // UDPATE
 
@@ -57,23 +57,27 @@ module.exports = srv => {
     });
 
     // Action: Promote an employee (changes data)
-    srv.on('PromoteEmployee', async (req) => {    
-     
-       const empId = req.data.EMPID;
-    // Update designation
-    await UPDATE(Employee)
-      .set({ DESIGNATION: 'CEO' })
-      .where({ EMPID: empId });
+    srv.on('PromoteEmployee', async (req) => {
+
+        const empId = req.data.EMPID;
+        // Update designation
+        await UPDATE(Employee)
+            .set({ DESIGNATION: 'CEO' })
+            .where({ EMPID: empId });
 
         // Return updated record
-       const updated = await SELECT.one.from(Employee).where({ EMPID: empId });
-    return updated;
+        const updated = await SELECT.one.from(Employee).where({ EMPID: empId });
+        return updated;
     });
 
     // Function: Return employees with salary above a threshold
     srv.on('HighSalaryEmployees', async (req) => {
         const SALARY = req.data.SALARY;
-        const results = await SELECT.from(Employee).where`SALARY > ${SALARY}`;
+        var results = [];
+        results =   await  cds.transaction(req).run([
+            SELECT.from(Employee).where`SALARY > ${SALARY}`
+        ])
+        
         return results;
     });
 

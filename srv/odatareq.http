@@ -40,7 +40,7 @@ POST http://localhost:4004/odata/v4/catservice/PromoteEmployee
 Content-Type: application/json
 
 {
-  "EMPID": 101
+  "EMPID": 102
 }
 
 ### Test Function: HighSalaryEmployees

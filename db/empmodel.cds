@@ -6,5 +6,6 @@ entity Employee {
     EMPNAME : String;
     GENDER : String(1);
     SALARY : Decimal(10,2);
+    DESIGNATION : String;
 }
 

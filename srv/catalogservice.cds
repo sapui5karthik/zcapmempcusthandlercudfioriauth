@@ -11,4 +11,10 @@ service catservice {
     @updateonly
     entity UpdateEmpSet as projection on db.Employee;
 
+   // Action: Promote an employee (updates Designation)
+  action PromoteEmployee(EMPID: Integer) returns String;
+
+  // Function: Get employees with salary above a threshold
+  function HighSalaryEmployees(SALARY: Decimal(13,2)) returns Decimal(13,12);
+
 }

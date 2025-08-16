@@ -1,4 +1,17 @@
+
 GET http://localhost:4004/odata/v4/catservice/ReadEmpSet
+
+### CREATE
+POST http://localhost:4004/odata/v4/catservice/CreateEmpSet
+Content-Type: application/json
+
+
+{
+        "EMPID": 103,
+        "EMPNAME": "Suman",
+        "GENDER": "M",
+        "SALARY": 43400        
+}
 
 ### CREATE
 POST http://localhost:4004/odata/v4/catservice/CreateEmpSet
@@ -6,9 +19,9 @@ Content-Type: application/json
 
 {
         "EMPID": 104,
-        "EMPNAME": "Suman",
-        "GENDER": "M",
-        "SALARY": 3000        
+        "EMPNAME": "Sushma",
+        "GENDER": "F",
+        "SALARY": 30000        
 }
 
 ### UPDATE
@@ -21,3 +34,14 @@ Content-Type: application/json
         "GENDER": "M",
         "SALARY": 22        
 }
+
+### Test Action: PromoteEmployee
+POST http://localhost:4004/odata/v4/catservice/PromoteEmployee
+Content-Type: application/json
+
+{
+  "EMPID": 101
+}
+
+### Test Function: HighSalaryEmployees
+GET http://localhost:4004/odata/v4/catservice/HighSalaryEmployees(SALARY=2000)

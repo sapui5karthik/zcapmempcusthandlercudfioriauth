@@ -3,8 +3,7 @@
     xmlns="sap.m">
     <Page id="page" title="Employee Data Base">
     <content>
-    <Text text="Employee CRUD Operations with CICD" />
-    <Button text="Test" />
+   
     </content>
     </Page>
 </mvc:View>

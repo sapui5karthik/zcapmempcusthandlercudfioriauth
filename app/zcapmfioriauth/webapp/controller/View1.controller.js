@@ -21,8 +21,8 @@ sap.ui.define([
         _tableData: function (jsonValues) {
             const oTable = this.byId("empTable");
             var oJSONModel = new JSONModel();
-            jsonValues.length === undefined ? 
-            oJSONModel.setData({ results: [jsonValues] }) : oJSONModel.setData({ results: jsonValues })
+            jsonValues.length === undefined ?
+                oJSONModel.setData({ results: [jsonValues] }) : oJSONModel.setData({ results: jsonValues })
 
             oTable.setModel(oJSONModel);
 
@@ -71,11 +71,9 @@ sap.ui.define([
                     var oTable = this.byId('empTable');
 
                     if (oTable) {
-                        var oTableBinding = oTable.getRowBinding
-                            ? oTable.getRowBinding() // for Table
-                            : oTable.getBinding("items"); // for List / Macro Table
+                        const oTableBinding = oTable.getBinding("items");
                         if (oTableBinding) {
-                            oTableBinding.refresh(); // Triggers re-read from backend
+                            oTableBinding.refresh();
                         }
                     }
 
@@ -85,6 +83,129 @@ sap.ui.define([
                     sap.m.MessageBox.error("Creation failed: " + oError.message);
                 }
             );
+        },
+        onUpdate: async function () {
+            const oModel = this.getOwnerComponent().getModel();
+
+            // Gather data from bound form (example IDs)
+            const data = {
+                EMPID: this.byId("idEmpId").getValue(),
+                EMPNAME: this.byId("idEmpName").getValue(),
+                GENDER: this.byId("idGender").getSelectedKey(),
+                SALARY: parseFloat(this.byId("idSalary").getValue()),
+                DESIGNATION: this.byId("idEmpDes").getValue()
+            };
+
+            // 1. Bind directly to the employee by key
+            const sPath = `/UpdateEmpSet(${data.EMPID})`;
+            const oBinding = oModel.bindContext(sPath, undefined, { $$updateGroupId: "employee" });
+            const oContext = oBinding.getBoundContext();
+            try {
+                // 2. Load the entity to ensure it exists
+                await oContext.requestObject();
+
+                // 3. Apply property changes
+                oContext.setProperty("EMPNAME", data.EMPNAME);
+                oContext.setProperty("GENDER", data.GENDER);
+                oContext.setProperty("SALARY", data.SALARY);
+                oContext.setProperty("DESIGNATION", data.DESIGNATION);
+
+                // 4. Submit PATCH request
+                await oModel.submitBatch("employee");
+
+                sap.m.MessageToast.show("Updated successfully");
+
+                // 5. Refresh table if needed
+                const oTable = this.byId("empTable");
+                if (oTable) {
+                    const oTableBinding = oTable.getBinding("items");
+                    if (oTableBinding) {
+                        oTableBinding.refresh();
+                    }
+                }
+                this._resetForm();
+              
+            } catch (err) {
+                sap.m.MessageBox.error("Update failed: " + err.message);
+            }
+
+
+
+        },
+        _resetForm : function(){
+  this.byId("idEmpId").setValue();
+                this.byId("idEmpName").setValue();
+                this.byId("idGender").setSelectedKey();
+                this.byId("idSalary").setValue();
+                this.byId("idEmpDes").setValue();
+                this.byId("idEmpDes").setEnabled(true);
+                this.byId('empTable').removeSelections();
+        },
+        onDelete: async function () {
+            const oModel = this.getOwnerComponent().getModel();
+
+            // Get employee ID from form (or selected row in table)
+            const empId = parseInt(this.byId("idEmpId").getValue(), 10);
+
+            if (isNaN(empId)) {
+                return sap.m.MessageBox.error("Please enter a valid Employee ID.");
+            }
+
+            // Path to entity
+            const sPath = `/UpdateEmpSet(${empId})`;
+
+            // Bind to context
+            const oBinding = oModel.bindContext(sPath, undefined, { $$updateGroupId: "employee" });
+            const oContext = oBinding.getBoundContext();
+
+            try {
+                // Ensure entity exists
+                await oContext.requestObject();
+
+                // Delete entity
+                await oContext.delete("$auto");   // or use your groupId "employee"
+
+                // Submit changes
+                await oModel.submitBatch("employee");
+
+                sap.m.MessageToast.show("Deleted successfully");
+
+                // Refresh table
+                const oTable = this.byId("empTable");
+                if (oTable) {
+                    const oTableBinding = oTable.getBinding("items");
+                    if (oTableBinding) {
+                        oTableBinding.refresh();
+                    }
+                }
+                this._resetForm();
+
+            } catch (err) {
+                sap.m.MessageBox.error("Delete failed: " + err.message);
+            }
+        },
+
+        _getvalues: function (oEvent) {
+            var oTable = this.byId("empTable");
+            var aSelectedItems = oTable.getSelectedItems();
+            var aSelectedData = [];
+
+            aSelectedItems.forEach((oItem) => {
+                var oContext = oItem.getBindingContext();
+                var oData = oContext.getObject();
+                aSelectedData.push(oData);
+
+                this.byId("idEmpId").setValue(oData.EMPID);
+                this.byId("idEmpName").setValue(oData.EMPNAME);
+                this.byId("idGender").setSelectedKey(oData.GENDER);
+                this.byId("idSalary").setValue(oData.SALARY);
+                this.byId("idEmpDes").setValue(oData.DESIGNATION);
+                this.byId("idEmpDes").setEnabled(false);
+            });
+
+
+
+
         },
         onPromote: function () {
             const empId = this.empid;

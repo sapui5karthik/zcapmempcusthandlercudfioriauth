@@ -29,7 +29,7 @@
           <Button text="Create" type="Emphasized" press=".onCreate"/>
           <Button text="Update" press=".onUpdate" class="sapUiTinyMarginBegin"/>
           <Button text="Delete" press=".onDelete" class="sapUiTinyMarginBegin"/>
-          <Button press="_getTableData" icon="sap-icon://refresh" class="sapUiTinyMarginBegin"/>
+          <Button press="_getTableData" icon="sap-icon://refresh" class="sapUiTinyMarginBegin"/> 
         </HBox>
       </VBox>
     <Toolbar>
@@ -39,7 +39,7 @@
         <Button text="Promote" press=".onPromote"/>
         <Button text="High Salary (>2000)" press=".onHighSalary"/>
       </Toolbar>
-      <Table id="empTable" inset="false" items="{/ReadEmpSet}">
+  <Table id="empTable" inset="false" items="{/ReadEmpSet}" mode="SingleSelectLeft" selectionChange="_getvalues">
     <headerToolbar>
         <Toolbar>
             <Title text="Employees"/>
